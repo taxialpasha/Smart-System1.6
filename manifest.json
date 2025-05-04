@@ -1,0 +1,79 @@
+{
+    "name": "نظام الاستثمار المتكامل",
+    "short_name": "نظام الاستثمار",
+    "description": "نظام إدارة الاستثمارات والمستثمرين",
+    "start_url": "index.html",
+    "display": "standalone",
+    "background_color": "#f9fafc",
+    "theme_color": "#3b82f6",
+    "orientation": "any",
+    "dir": "rtl",
+    "lang": "ar",
+    "categories": ["finance", "business", "productivity"],
+    "icons": [
+      {
+        "src": "icon.png",
+        "sizes": "72x72",
+        "type": "image/png",
+        "purpose": "any maskable"
+      },
+      {
+        "src": "icon.png",
+        "sizes": "96x96",
+        "type": "image/png",
+        "purpose": "any maskable"
+      },
+      {
+        "src": "icon.png",
+        "sizes": "128x128",
+        "type": "image/png",
+        "purpose": "any maskable"
+      },
+      {
+        "src": "icon.png",
+        "sizes": "144x144",
+        "type": "image/png",
+        "purpose": "any maskable"
+      },
+      {
+        "src": "icon.png",
+        "sizes": "152x152",
+        "type": "image/png",
+        "purpose": "any maskable"
+      },
+      {
+        "src": "icon.png",
+        "sizes": "192x192",
+        "type": "image/png",
+        "purpose": "any maskable"
+      },
+      {
+        "src": "icon.png",
+        "sizes": "384x384",
+        "type": "image/png",
+        "purpose": "any maskable"
+      },
+      {
+        "src": "icon.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "any maskable"
+      }
+    ],
+    "screenshots": [
+      {
+        "src": "icon.png",
+        "sizes": "1280x720",
+        "type": "image/png",
+        "platform": "wide",
+        "label": "لوحة التحكم"
+      },
+      {
+        "src": "icon.png",
+        "sizes": "1280x720",
+        "type": "image/png",
+        "platform": "wide",
+        "label": "إدارة المستثمرين"
+      }
+    ]
+  }

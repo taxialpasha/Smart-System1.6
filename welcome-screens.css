@@ -1,0 +1,769 @@
+/*
+ * نظام الاستثمار المتكامل - أنماط شاشات الترحيب المتطورة
+ * صفحة الأنماط الخاصة بشاشات الترحيب والانتظار
+ * تصميم عصري وتأثيرات بصرية غنية
+ * 
+ * الإصدار: 3.0.0
+ * تاريخ التحديث: 2025-05-03
+ */
+
+/* استيراد الخطوط العربية */
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&family=Cairo:wght@400;600;700&display=swap');
+
+/* تأثيرات الحركة */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(-30px); }
+}
+
+@keyframes scaleIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes slideInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideInLeft {
+    from { transform: translateX(-100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideOutRight {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(100%); opacity: 0; }
+}
+
+@keyframes slideOutLeft {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(-100%); opacity: 0; }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes float {
+    0% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-15px) rotate(2deg); }
+    100% { transform: translateY(0) rotate(0deg); }
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+@keyframes progressAnimation {
+    0% { width: 0%; }
+    100% { width: 100%; }
+}
+
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes floating {
+    0% { transform: translate(0, 0); }
+    25% { transform: translate(5px, 10px); }
+    50% { transform: translate(10px, 5px); }
+    75% { transform: translate(5px, -5px); }
+    100% { transform: translate(0, 0); }
+}
+
+@keyframes rotateClockwise {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes rotateCounterClockwise {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(-360deg); }
+}
+
+@keyframes orbiting {
+    0% { transform: rotate(0deg) translateX(150px) rotate(0deg); }
+    100% { transform: rotate(360deg) translateX(150px) rotate(-360deg); }
+}
+
+@keyframes glowing {
+    0% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.3); }
+    50% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.5); }
+    100% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.3); }
+}
+
+@keyframes borderGlow {
+    0% { box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1); }
+    50% { box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.5), 0 0 15px rgba(255, 255, 255, 0.3); }
+    100% { box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1); }
+}
+
+@keyframes ripple {
+    0% { transform: scale(0.8); opacity: 1; }
+    100% { transform: scale(2); opacity: 0; }
+}
+
+@keyframes moveGradient {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 100% 100%; }
+}
+
+/* التنسيق الرئيسي */
+.welcome-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    overflow: hidden;
+    direction: rtl;
+    font-family: 'Tajawal', 'Cairo', 'Arial', sans-serif;
+    user-select: none;
+}
+
+.welcome-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: opacity 1000ms cubic-bezier(0.19, 1, 0.22, 1), 
+                transform 1000ms cubic-bezier(0.19, 1, 0.22, 1);
+    background-size: 200% 200%;
+    background-position: center;
+    animation: gradientAnimation 15s ease infinite;
+    box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.4);
+}
+
+.welcome-screen.active {
+    opacity: 1;
+    transform: translateX(0);
+    z-index: 2;
+}
+
+.welcome-screen.slide-left {
+    animation: slideOutLeft 1000ms forwards cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.welcome-screen.next-active {
+    animation: slideInRight 1000ms forwards cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.welcome-icon {
+    width: 130px;
+    height: 130px;
+    margin-bottom: 35px;
+    animation: float 6s ease-in-out infinite;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
+    transition: transform 0.5s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.welcome-icon::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.15), transparent 70%);
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    animation: pulse 3s ease-in-out infinite;
+}
+
+.welcome-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px;
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 20px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transform: translateY(30px);
+    opacity: 0;
+    transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+    position: relative;
+    overflow: hidden;
+    animation: borderGlow 4s infinite;
+}
+
+.welcome-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+}
+
+.welcome-content::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+}
+
+.welcome-screen.active .welcome-content {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.2s;
+}
+
+.welcome-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    position: relative;
+    display: inline-block;
+    letter-spacing: -0.5px;
+}
+
+.welcome-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    right: 30%;
+    width: 40%;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.9), transparent);
+    border-radius: 2px;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.8s ease 0.3s;
+    animation: shimmer 3s infinite;
+    background-size: 200% 100%;
+}
+
+.welcome-screen.active .welcome-title::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+.welcome-subtitle {
+    font-size: 1.4rem;
+    margin-bottom: 50px;
+    opacity: 0.9;
+    line-height: 1.6;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: 400;
+}
+
+.welcome-features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    text-align: right;
+    margin-bottom: 40px;
+    width: 100%;
+}
+
+.welcome-feature {
+    display: flex;
+    align-items: flex-start;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+}
+
+.welcome-feature::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.welcome-feature:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.welcome-feature:hover::before {
+    opacity: 1;
+}
+
+.welcome-screen.active .welcome-feature {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.welcome-screen.active .welcome-feature:nth-child(1) {
+    transition-delay: 0.3s;
+}
+
+.welcome-screen.active .welcome-feature:nth-child(2) {
+    transition-delay: 0.4s;
+}
+
+.welcome-screen.active .welcome-feature:nth-child(3) {
+    transition-delay: 0.5s;
+}
+
+.welcome-screen.active .welcome-feature:nth-child(4) {
+    transition-delay: 0.6s;
+}
+
+.welcome-feature-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 45px;
+    height: 45px;
+    margin-left: 15px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.welcome-feature-icon::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.3), transparent 70%);
+}
+
+.welcome-feature:hover .welcome-feature-icon {
+    transform: scale(1.1) rotate(5deg);
+    background: rgba(255, 255, 255, 0.25);
+    animation: glowing 2s infinite;
+}
+
+.welcome-feature-text {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    text-align: right;
+    font-weight: 400;
+}
+
+/* مؤشر التقدم المتطور */
+.welcome-progress {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 12px 24px;
+    border-radius: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.welcome-progress-dots {
+    display: flex;
+    gap: 10px;
+}
+
+.welcome-progress-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.3);
+    transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.welcome-progress-dot.active {
+    background-color: white;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+}
+
+.welcome-progress-dot.active::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.6));
+    animation: pulse 2s ease infinite;
+}
+
+.welcome-progress-timer {
+    width: 100px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-left: 8px;
+    position: relative;
+}
+
+.welcome-progress-timer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        rgba(255, 255, 255, 0.1),
+        rgba(255, 255, 255, 0.2),
+        rgba(255, 255, 255, 0.1)
+    );
+    animation: moveGradient 3s linear infinite;
+    background-size: 200% 200%;
+}
+
+.welcome-progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 1));
+    border-radius: 2px;
+    animation-name: progressAnimation;
+    animation-timing-function: linear;
+    animation-duration: 2500ms;
+    animation-fill-mode: forwards;
+    position: relative;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+.welcome-progress-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20px;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8));
+    animation: shimmer 2s infinite;
+    background-size: 200% 100%;
+}
+
+/* زر تخطي */
+.welcome-skip {
+    position: absolute;
+    bottom: 40px;
+    left: 40px;
+    display: flex;
+    z-index: 10;
+}
+
+.skip-button {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.skip-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.2), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.skip-button:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-5px);
+}
+
+.skip-button:hover::before {
+    opacity: 1;
+}
+
+.skip-button:active {
+    transform: translateY(-2px);
+}
+
+/* شاشة الانتظار المتطورة */
+.splash-screen {
+    position: relative;
+    overflow: hidden;
+}
+
+.splash-screen::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(20,41,82,0.4), rgba(10,24,52,0.9));
+    z-index: -1;
+}
+
+.splash-progress-container {
+    width: 300px;
+    height: 6px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 60px;
+    position: relative;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.splash-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, rgba(255,255,255,0.7), rgba(74,144,226,0.9), rgba(255,255,255,0.7));
+    background-size: 200% 100%;
+    animation: progressAnimation 3.5s cubic-bezier(0.1, 0.7, 0.9, 0.99) forwards, gradientAnimation 2s ease infinite;
+    box-shadow: 0 0 15px rgba(74,144,226,0.5);
+}
+
+.splash-loading-text {
+    margin-top: 20px;
+    font-size: 16px;
+    opacity: 0.85;
+    animation: pulse 2s infinite;
+    letter-spacing: 1px;
+}
+
+/* تأثيرات خلفية متطورة */
+.splash-particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.particle {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    filter: blur(1px);
+    animation: floating 20s infinite linear;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.orbiting-circle {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: rotateClockwise 20s linear infinite;
+}
+
+.orbiting-dot {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    box-shadow: 0 0 15px white;
+    animation: orbiting 15s linear infinite;
+}
+
+.rotating-ring {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    border-top: 2px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: rotateCounterClockwise 30s linear infinite;
+}
+
+/* تأثيرات إضافية */
+.ripple-effect {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: ripple 5s linear infinite;
+}
+
+.ripple-effect:nth-child(2) {
+    animation-delay: 1s;
+}
+
+.ripple-effect:nth-child(3) {
+    animation-delay: 2s;
+}
+
+.ripple-effect:nth-child(4) {
+    animation-delay: 3s;
+}
+
+.light-beam {
+    position: absolute;
+    width: 3px;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transform: rotate(45deg);
+    animation: moveGradient 8s linear infinite;
+    filter: blur(2px);
+}
+
+.light-beam:nth-child(1) {
+    left: 20%;
+    animation-duration: 7s;
+}
+
+.light-beam:nth-child(2) {
+    left: 40%;
+    animation-duration:.5s;
+}
+
+.light-beam:nth-child(3) {
+    left: 60%;
+    animation-duration: 9s;
+}
+
+.light-beam:nth-child(4) {
+    left: 80%;
+    animation-duration: 6s;
+}
+
+/* تعديلات للهواتف المحمولة */
+@media (max-width: 768px) {
+    .welcome-features {
+        grid-template-columns: 1fr;
+    }
+    
+    .welcome-title {
+        font-size: 2.2rem;
+    }
+    
+    .welcome-subtitle {
+        font-size: 1.1rem;
+        max-width: 95%;
+    }
+    
+    .welcome-icon {
+        width: 90px;
+        height: 90px;
+    }
+    
+    .welcome-content {
+        padding: 25px;
+        max-width: 90%;
+    }
+    
+    .splash-progress-container {
+        width: 250px;
+    }
+    
+    .welcome-skip {
+        bottom: 30px;
+        left: 30px;
+    }
+    
+    .welcome-progress {
+        bottom: 30px;
+        padding: 8px 15px;
+    }
+    
+    .welcome-progress-timer {
+        width: 60px;
+    }
+    
+    .rotating-ring, 
+    .orbiting-circle {
+        width: 300px;
+        height: 300px;
+    }
+}
+
+/* تعديلات لدعم المتصفحات القديمة */
+@supports not (backdrop-filter: blur(10px)) {
+    .welcome-content {
+        background: rgba(0, 0, 0, 0.7);
+    }
+    
+    .welcome-progress,
+    .skip-button {
+        background: rgba(0, 0, 0, 0.5);
+    }
+}

@@ -1,0 +1,454 @@
+/**
+ * أنماط قائمة ملف المستخدم المحسنة
+ */
+
+/* حاوية ملف المستخدم في الشريط العلوي */
+.user-profile-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.user-profile-container:hover {
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+/* تصميم صورة المستخدم */
+.user-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: #3b82f6;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-left: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+/* علامة الحالة (متصل/غير متصل) */
+.user-status {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid white;
+    background-color: #10b981; /* أخضر للمتصل */
+}
+
+.user-status.offline {
+    background-color: #9ca3af; /* رمادي لغير المتصل */
+}
+
+/* معلومات المستخدم */
+.user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #1f2937;
+}
+
+.user-role {
+    font-size: 0.8rem;
+    color: #6b7280;
+}
+
+/* زر القائمة المنسدلة */
+.user-menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 5px;
+    color: #6b7280;
+    transition: transform 0.3s ease;
+}
+
+.user-menu-toggle.active {
+    transform: rotate(180deg);
+}
+
+/* القائمة المنسدلة */
+.user-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 260px;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+}
+
+.user-dropdown-menu.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-menu {
+    padding: 8px 0;
+}
+
+/* ترويسة القائمة المنسدلة */
+.dropdown-header {
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #f3f4f6;
+    margin-bottom: 5px;
+}
+
+.dropdown-header .user-avatar.large {
+    width: 50px;
+    height: 50px;
+    font-size: 1.4rem;
+}
+
+.dropdown-user-info {
+    margin-right: 12px;
+}
+
+.dropdown-user-name {
+    font-weight: 600;
+    font-size: 1rem;
+    color: #1f2937;
+    margin-bottom: 4px;
+}
+
+.dropdown-user-email {
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+/* عناصر القائمة */
+.dropdown-menu-items {
+    padding: 0 5px;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    color: #4b5563;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+    background-color: #f9fafb;
+}
+
+.dropdown-item i {
+    margin-left: 10px;
+    width: 20px;
+    text-align: center;
+    color: #6b7280;
+}
+
+/* فاصل في القائمة */
+.dropdown-divider {
+    height: 1px;
+    background-color: #f3f4f6;
+    margin: 8px 0;
+}
+
+/* مؤشر الإشعارات */
+.user-notification-badge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #ef4444;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 600;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid white;
+    padding: 0 4px;
+}
+
+/* عناصر قائمة إضافية */
+.dropdown-item.active {
+    background-color: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+}
+
+.dropdown-item.active i {
+    color: #3b82f6;
+}
+
+.dropdown-item.danger {
+    color: #ef4444;
+}
+
+.dropdown-item.danger i {
+    color: #ef4444;
+}
+
+.dropdown-item.danger:hover {
+    background-color: rgba(239, 68, 68, 0.05);
+}
+
+/* محتوى واجهة الإعدادات */
+.user-settings-modal .modal {
+    max-width: 650px;
+    min-height: 500px;
+}
+
+.user-profile-tabs {
+    display: flex;
+}
+
+.user-profile-tab-btn {
+    padding: 12px 16px;
+    font-weight: 500;
+    color: #6b7280;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+}
+
+.user-profile-tab-btn.active {
+    color: #3b82f6;
+    border-bottom-color: #3b82f6;
+}
+
+.user-profile-tab-content {
+    display: none;
+    padding: 20px 0;
+}
+
+.user-profile-tab-content.active {
+    display: block;
+}
+
+/* مؤشر الحالة في صفحة الملف الشخصي */
+.profile-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    margin-top: 5px;
+}
+
+.profile-status.verified {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+.profile-status.pending {
+    background-color: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+}
+
+.profile-status i {
+    margin-left: 5px;
+}
+
+/* مقياس قوة كلمة المرور */
+.password-strength-meter {
+    height: 6px;
+    background-color: #e5e7eb;
+    border-radius: 3px;
+    margin-top: 8px;
+    overflow: hidden;
+}
+
+.password-strength-meter .strength-value {
+    height: 100%;
+    width: 0;
+    transition: width 0.3s ease;
+}
+
+.password-strength-meter .strength-value.weak {
+    width: 25%;
+    background-color: #ef4444;
+}
+
+.password-strength-meter .strength-value.medium {
+    width: 50%;
+    background-color: #f59e0b;
+}
+
+.password-strength-meter .strength-value.good {
+    width: 75%;
+    background-color: #3b82f6;
+}
+
+.password-strength-meter .strength-value.strong {
+    width: 100%;
+    background-color: #10b981;
+}
+
+.password-strength-text {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 6px;
+    font-size: 0.8rem;
+}
+
+.password-strength-text .strength-label {
+    color: #6b7280;
+}
+
+.password-strength-text .strength-description {
+    color: #4b5563;
+}
+
+/* تبديل تفعيل المصادقة الثنائية */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 24px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #e5e7eb;
+    transition: 0.4s;
+    border-radius: 24px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+    background-color: #3b82f6;
+}
+
+input:checked + .toggle-slider:before {
+    transform: translateX(24px);
+}
+
+/* تخصيص الثيم */
+.theme-preview {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.theme-option {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.theme-option.active {
+    border-color: #3b82f6;
+}
+
+.theme-option .theme-check {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: white;
+    background-color: #3b82f6;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    opacity: 0;
+}
+
+.theme-option.active .theme-check {
+    opacity: 1;
+}
+
+.theme-option .theme-preview-header {
+    height: 20px;
+    display: flex;
+}
+
+.theme-option .theme-preview-sidebar {
+    width: 20px;
+    height: 60px;
+    float: right;
+}
+
+.theme-light .theme-preview-header {
+    background-color: #f9fafb;
+}
+
+.theme-light .theme-preview-sidebar {
+    background-color: #f3f4f6;
+}
+
+.theme-light .theme-preview-content {
+    background-color: #ffffff;
+}
+
+.theme-dark .theme-preview-header {
+    background-color: #1f2937;
+}
+
+.theme-dark .theme-preview-sidebar {
+    background-color: #111827;
+}
+
+.theme-dark .theme-preview-content {
+    background-color: #374151;
+}
+
+.theme-blue .theme-preview-header {
+    background-color: #dbeafe;
+}
+
+.theme-blue .theme-preview-sidebar {
+    background-color: #bfdbfe;
+}
+
+.theme-blue .theme-preview-content {
+    background-color: #eff6ff;
+}

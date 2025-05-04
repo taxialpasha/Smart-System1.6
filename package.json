@@ -1,0 +1,41 @@
+{
+  "name": "investment-desktop",
+  "version": "1.0.0",
+  "description": "كرار الاسعبريElectron",
+  "main": "main.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "keywords": [],
+  "author": "كرار السعبري",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^21.4.0",
+    "electron-builder": "^24.6.0"
+  },
+  "build": {
+    "appId": "com.investment.desktop",
+    "productName": "نظام الاستثمار",
+    "files": [
+      "**/*"
+    ],
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "نظام الاستثمار"
+    }
+  }
+}

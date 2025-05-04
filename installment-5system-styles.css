@@ -1,0 +1,617 @@
+/**
+ * أنماط نظام إدارة الأقساط المتكامل
+ * تنسيقات CSS لنظام الأقساط في تطبيق نظام الاستثمار المتكامل
+ */
+
+/* أنماط عامة لصفحة الأقساط */
+#installments-page .dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+#installments-page .card {
+    position: relative;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#installments-page .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+#installments-page .card-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    z-index: 0;
+}
+
+#installments-page .card-pattern i {
+    font-size: 100px;
+    opacity: 0.5;
+    transform: rotate(20deg);
+}
+
+#installments-page .card-header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    z-index: 1;
+}
+
+#installments-page .card-title {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+#installments-page .card-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+#installments-page .card-change {
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+#installments-page .card-change.positive {
+    color: #10b981;
+}
+
+#installments-page .card-change.negative {
+    color: #ef4444;
+}
+
+#installments-page .card-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    color: white;
+}
+
+#installments-page .card-icon.primary {
+    background-color: #3b82f6;
+}
+
+#installments-page .card-icon.success {
+    background-color: #10b981;
+}
+
+#installments-page .card-icon.warning {
+    background-color: #f59e0b;
+}
+
+#installments-page .card-icon.danger {
+    background-color: #ef4444;
+}
+
+#installments-page .card-icon.info {
+    background-color: #3b82f6;
+}
+
+/* أنماط جدول الأقساط */
+#installments-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+#installments-table th {
+    background-color: #f8f9fa;
+    padding: 15px;
+    font-weight: 600;
+    text-align: right;
+    color: #333;
+    border-bottom: 2px solid #e9ecef;
+}
+
+#installments-table td {
+    padding: 15px;
+    vertical-align: middle;
+    border-bottom: 1px solid #e9ecef;
+}
+
+#installments-table tbody tr:hover {
+    background-color: rgba(59, 130, 246, 0.05);
+}
+
+#installments-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* أنماط أزرار التحكم في الأقساط */
+.installment-actions {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+.installment-action-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: #f8f9fa;
+}
+
+.installment-action-btn:hover {
+    transform: scale(1.1);
+}
+
+.installment-action-btn.view-installment {
+    color: #3b82f6;
+}
+
+.installment-action-btn.view-installment:hover {
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+.installment-action-btn.edit-installment {
+    color: #10b981;
+}
+
+.installment-action-btn.edit-installment:hover {
+    background-color: rgba(16, 185, 129, 0.1);
+}
+
+.installment-action-btn.pay {
+    color: #f59e0b;
+}
+
+.installment-action-btn.pay:hover {
+    background-color: rgba(245, 158, 11, 0.1);
+}
+
+.installment-action-btn.delete {
+    color: #ef4444;
+}
+
+.installment-action-btn.delete:hover {
+    background-color: rgba(239, 68, 68, 0.1);
+}
+
+/* أنماط بطاقة معلومات المستثمر */
+.investor-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.investor-avatar {
+    width: 36px;
+    height: 36px;
+    background-color: #3b82f6;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.investor-name {
+    font-weight: 600;
+    color: #333;
+}
+
+.investor-phone {
+    font-size: 12px;
+    color: #666;
+}
+
+/* أنماط شارات الحالة */
+.badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.badge-primary {
+    background-color: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+}
+
+.badge-success {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+.badge-warning {
+    background-color: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+}
+
+.badge-danger {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+/* أنماط نافذة تفاصيل الأقساط */
+#installment-details-modal .modal-body {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+#installment-details-content .installment-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#installment-details-content .investor-avatar.large {
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+#installment-details-content .investor-fullname {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 10px 0;
+}
+
+#installment-details-content .installment-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+#installment-details-content .stat-item {
+    flex: 1;
+    min-width: 120px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    text-align: center;
+}
+
+#installment-details-content .stat-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: #3b82f6;
+    margin-bottom: 5px;
+}
+
+#installment-details-content .stat-label {
+    font-size: 12px;
+    color: #666;
+}
+
+#installment-details-content .detail-group {
+    margin-bottom: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    padding: 15px;
+}
+
+#installment-details-content .detail-group-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+#installment-details-content .detail-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px dashed #e9ecef;
+}
+
+#installment-details-content .detail-item:last-child {
+    border-bottom: none;
+}
+
+#installment-details-content .detail-label {
+    font-weight: 600;
+    color: #666;
+}
+
+#installment-details-content .detail-value {
+    color: #333;
+}
+
+#installment-details-content .mini-table-container {
+    margin-top: 15px;
+    overflow-x: auto;
+}
+
+#installment-details-content .mini-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#installment-details-content .mini-table th {
+    background-color: #f8f9fa;
+    padding: 10px;
+    font-weight: 600;
+    text-align: right;
+    color: #333;
+    border-bottom: 2px solid #e9ecef;
+}
+
+#installment-details-content .mini-table td {
+    padding: 10px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+#installment-details-content .mini-table .btn-sm {
+    padding: 4px 8px;
+    font-size: 12px;
+}
+
+#installment-details-content .installment-summary {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 20px;
+}
+
+#installment-details-content .summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+#installment-details-content .summary-label {
+    font-weight: 600;
+    color: #666;
+}
+
+#installment-details-content .summary-value {
+    font-weight: 700;
+    color: #3b82f6;
+}
+
+/* أنماط نافذة إضافة قسط جديد */
+#add-installment-form .grid-cols-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+#add-installment-form .card.bg-light {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 20px;
+}
+
+#add-installment-form .card.bg-light h4 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #3b82f6;
+    font-size: 16px;
+}
+
+#installment-summary p {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 0;
+}
+
+#installment-summary span {
+    font-weight: 600;
+    color: #3b82f6;
+}
+
+/* أنماط نافذة تسديد قسط */
+#installment-details {
+    margin-top: 20px;
+}
+
+#installment-details .card {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+#installment-details .card h4 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #3b82f6;
+    font-size: 16px;
+}
+
+#installment-details p {
+    margin: 8px 0;
+}
+
+#installment-details h5 {
+    margin-top: 15px;
+    margin-bottom: 10px;
+    color: #333;
+    font-size: 14px;
+}
+
+/* أنماط شريط التقدم */
+.progress {
+    height: 10px;
+    background-color: #e9ecef;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.progress-bar {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.7rem;
+    transition: width 0.5s ease;
+}
+
+.progress-bar.bg-success {
+    background-color: #10b981;
+}
+
+/* أنماط تنبيهات الأقساط */
+.installment-badge {
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.due-badge {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* أنماط خلفية الصفوف */
+.bg-light-danger {
+    background-color: rgba(239, 68, 68, 0.1);
+}
+
+.bg-light-warning {
+    background-color: rgba(245, 158, 11, 0.1);
+}
+
+.bg-light-success {
+    background-color: rgba(16, 185, 129, 0.1);
+}
+
+/* أنماط تصدير البيانات والتقارير */
+.section-actions .btn-group {
+    display: flex;
+    gap: 5px;
+}
+
+/* تحسينات توافق الهاتف المحمول */
+@media (max-width: 768px) {
+    #installments-page .dashboard-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    #add-installment-form .grid-cols-2 {
+        grid-template-columns: 1fr;
+    }
+    
+    #installment-details-content .installment-stats {
+        flex-direction: column;
+    }
+    
+    #installments-table {
+        display: block;
+        overflow-x: auto;
+    }
+    
+    .modal {
+        width: 90%;
+    }
+}
+
+/* أنماط البحث في الأقساط */
+#installments-page .search-box {
+    position: relative;
+    margin-left: 10px;
+}
+
+#installments-page .search-input {
+    width: 250px;
+    padding: 8px 15px;
+    padding-right: 40px;
+    border-radius: 20px;
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+#installments-page .search-input:focus {
+    width: 300px;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    border-color: #3b82f6;
+}
+
+#installments-page .search-icon {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    color: #666;
+}
+
+/* أنماط تقارير الأقساط */
+.report-stats {
+    margin-top: 15px;
+}
+
+.report-stats .stat-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px dashed #e9ecef;
+}
+
+.report-stats .stat-label {
+    font-weight: 600;
+    color: #666;
+}
+
+.report-stats .stat-value {
+    font-weight: 700;
+    color: #3b82f6;
+}
+
+/* أنماط إضافية للمظهر العام */
+.p-3 {
+    padding: 15px;
+}
+
+.mt-3 {
+    margin-top: 15px;
+}
+
+.mb-3 {
+    margin-bottom: 15px;
+}
+
+.text-center {
+    text-align: center;
+}

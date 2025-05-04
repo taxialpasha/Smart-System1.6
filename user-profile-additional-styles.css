@@ -1,0 +1,806 @@
+/**
+ * أنماط إضافية لنظام ملف المستخدم
+ * يحتوي على تنسيقات متقدمة لنوافذ وعناصر ملف المستخدم
+ */
+
+/* تنسيقات عامة لنوافذ المستخدم */
+.user-settings-modal .modal {
+    max-width: 800px;
+    min-height: 500px;
+}
+
+.user-profile-tabs {
+    display: flex;
+    border-bottom: 1px solid #e5e7eb;
+    overflow-x: auto;
+    margin-bottom: 20px;
+}
+
+.user-profile-tab-btn {
+    padding: 12px 16px;
+    font-weight: 500;
+    color: #6b7280;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.user-profile-tab-btn:hover {
+    color: #3b82f6;
+}
+
+.user-profile-tab-btn.active {
+    color: #3b82f6;
+    border-bottom-color: #3b82f6;
+}
+
+.user-profile-tab-content {
+    display: none;
+    padding: 20px 0;
+}
+
+.user-profile-tab-content.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+/* عنوان القسم */
+.section-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #1f2937;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.section-title i {
+    margin-left: 10px;
+    color: #3b82f6;
+}
+
+/* فاصل القسم */
+.section-divider {
+    height: 1px;
+    background-color: #e5e7eb;
+    margin: 25px 0;
+}
+
+/* صورة الملف الشخصي */
+.profile-picture-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.profile-picture {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #3b82f6;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 2.5rem;
+    margin-left: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.profile-picture img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-picture-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* تنسيقات المصادقة الثنائية */
+.two-factor-auth {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f9fafb;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.two-factor-info {
+    display: flex;
+    align-items: center;
+}
+
+.two-factor-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #dbeafe;
+    color: #3b82f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-left: 15px;
+}
+
+.two-factor-info h4 {
+    margin: 0 0 5px 0;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.two-factor-info p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+/* تنسيقات الأجهزة المتصلة */
+.connected-devices {
+    margin-top: 15px;
+}
+
+.device-item {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    background-color: #f9fafb;
+    transition: all 0.2s ease;
+}
+
+.device-item:hover {
+    background-color: #f3f4f6;
+}
+
+.device-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #e5e7eb;
+    color: #4b5563;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    margin-left: 12px;
+}
+
+.device-info {
+    flex: 1;
+}
+
+.device-name {
+    font-weight: 500;
+    color: #1f2937;
+    margin-bottom: 3px;
+}
+
+.device-details {
+    display: flex;
+    font-size: 0.8rem;
+    color: #6b7280;
+}
+
+.device-location {
+    margin-left: 10px;
+}
+
+.device-time {
+    margin-left: 10px;
+}
+
+.device-actions {
+    margin-right: auto;
+}
+
+/* تنسيقات إعدادات الإشعارات */
+.notification-group {
+    margin-bottom: 25px;
+}
+
+.notification-group h4 {
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0 0 15px 0;
+    font-size: 1rem;
+}
+
+.notification-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.notification-title {
+    font-weight: 500;
+    color: #1f2937;
+    margin-bottom: 3px;
+}
+
+.notification-description {
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+/* تنسيقات سجل النشاطات */
+.activity-timeline {
+    padding: 10px 0;
+}
+
+.activity-item {
+    display: flex;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.activity-item::after {
+    content: "";
+    position: absolute;
+    top: 40px;
+    right: 20px;
+    bottom: -20px;
+    width: 1px;
+    background-color: #e5e7eb;
+    z-index: 1;
+}
+
+.activity-item:last-child::after {
+    display: none;
+}
+
+.activity-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #3b82f6;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    margin-left: 15px;
+    position: relative;
+    z-index: 2;
+}
+
+.activity-icon.login {
+    background-color: #3b82f6;
+}
+
+.activity-icon.logout {
+    background-color: #ef4444;
+}
+
+.activity-icon.profile {
+    background-color: #10b981;
+}
+
+.activity-icon.security {
+    background-color: #f59e0b;
+}
+
+.activity-icon.transaction {
+    background-color: #8b5cf6;
+}
+
+.activity-icon.settings {
+    background-color: #6b7280;
+}
+
+.activity-content {
+    flex: 1;
+}
+
+.activity-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.activity-title {
+    font-weight: 500;
+    color: #1f2937;
+}
+
+.activity-time {
+    font-size: 0.8rem;
+    color: #6b7280;
+}
+
+.activity-details {
+    font-size: 0.9rem;
+    color: #4b5563;
+}
+
+.activity-filters {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f9fafb;
+    border-radius: 8px;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 30px 0;
+    color: #6b7280;
+    font-style: italic;
+}
+
+/* فلتر النشاطات */
+.activity-type-filter {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.activity-type-filter button {
+    padding: 6px 12px;
+    border-radius: 4px;
+    background-color: #fff;
+    border: 1px solid #e5e7eb;
+    color: #6b7280;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.activity-type-filter button:hover {
+    border-color: #d1d5db;
+}
+
+.activity-type-filter button.active {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+    color: white;
+}
+
+/* شارات قائمة المستخدم */
+.dropdown-item .badge {
+    margin-right: auto;
+    padding: 2px 8px;
+    border-radius: 15px;
+    background-color: #ef4444;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+/* تصميم مخصص للزر المبادل */
+.toggle-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.toggle-label input {
+    margin-left: 10px;
+}
+
+/* رسوم متحركة */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* تنسيقات مسؤول النظام */
+.admin-section {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #fff7ed;
+    border: 1px solid #ffedd5;
+    border-radius: 8px;
+}
+
+.admin-section h4 {
+    color: #c2410c;
+    font-weight: 600;
+    margin: 0 0 10px 0;
+}
+
+.admin-section p {
+    margin: 0 0 15px 0;
+    color: #9a3412;
+    font-size: 0.9rem;
+}
+
+.admin-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.admin-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 8px;
+    background-color: #ef4444;
+    color: white;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-right: 8px;
+}
+
+/* المزيد من تنسيقات نافذة ملف المستخدم */
+.profile-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 8px;
+    border-radius: 15px;
+    font-size: 0.75rem;
+    margin-top: 5px;
+}
+
+.profile-status.verified {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+.profile-status.pending {
+    background-color: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+}
+
+.profile-status i {
+    margin-left: 5px;
+}
+
+/* تنسيقات تصدير البيانات */
+.export-section {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f3f4f6;
+    border-radius: 8px;
+}
+
+.export-section h4 {
+    font-weight: 600;
+    margin: 0 0 10px 0;
+}
+
+.export-section p {
+    margin: 0 0 15px 0;
+    font-size: 0.9rem;
+    color: #4b5563;
+}
+
+.export-options {
+    display: flex;
+    gap: 10px;
+}
+
+/* تنسيقات إعدادات الخصوصية */
+.privacy-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.privacy-option:last-child {
+    border-bottom: none;
+}
+
+.privacy-title {
+    font-weight: 500;
+    color: #1f2937;
+    margin-bottom: 3px;
+}
+
+.privacy-description {
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+/* تنسيقات تبويب الإحصائيات */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.stat-card {
+    background-color: #f9fafb;
+    border-radius: 8px;
+    padding: 15px;
+}
+
+.stat-title {
+    font-size: 0.9rem;
+    color: #6b7280;
+    margin-bottom: 5px;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.stat-change {
+    display: flex;
+    align-items: center;
+    font-size: 0.8rem;
+    margin-top: 5px;
+}
+
+.stat-change.positive {
+    color: #10b981;
+}
+
+.stat-change.negative {
+    color: #ef4444;
+}
+
+.stat-change i {
+    margin-left: 3px;
+}
+
+/* تنسيقات وضع السمة الداكنة */
+body.theme-dark {
+    background-color: #1f2937;
+    color: #e5e7eb;
+}
+
+body.theme-dark .user-profile-container {
+    background-color: transparent;
+}
+
+body.theme-dark .user-profile-container:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+body.theme-dark .user-avatar {
+    background-color: #3b82f6;
+}
+
+body.theme-dark .user-name {
+    color: #f3f4f6;
+}
+
+body.theme-dark .user-role {
+    color: #9ca3af;
+}
+
+body.theme-dark .user-dropdown-menu {
+    background-color: #374151;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+body.theme-dark .dropdown-header {
+    border-bottom-color: #4b5563;
+}
+
+body.theme-dark .dropdown-user-name {
+    color: #f3f4f6;
+}
+
+body.theme-dark .dropdown-user-email {
+    color: #9ca3af;
+}
+
+body.theme-dark .dropdown-item {
+    color: #d1d5db;
+}
+
+body.theme-dark .dropdown-item:hover {
+    background-color: #4b5563;
+}
+
+body.theme-dark .dropdown-item i {
+    color: #9ca3af;
+}
+
+body.theme-dark .dropdown-divider {
+    background-color: #4b5563;
+}
+
+body.theme-dark .modal {
+    background-color: #374151;
+    color: #e5e7eb;
+}
+
+body.theme-dark .modal-header {
+    border-bottom-color: #4b5563;
+}
+
+body.theme-dark .modal-footer {
+    border-top-color: #4b5563;
+}
+
+body.theme-dark .modal-close {
+    color: #d1d5db;
+}
+
+body.theme-dark .user-profile-tabs {
+    border-bottom-color: #4b5563;
+}
+
+body.theme-dark .user-profile-tab-btn {
+    color: #9ca3af;
+}
+
+body.theme-dark .user-profile-tab-btn:hover,
+body.theme-dark .user-profile-tab-btn.active {
+    color: #3b82f6;
+}
+
+body.theme-dark .section-title {
+    color: #f3f4f6;
+}
+
+body.theme-dark .section-divider {
+    background-color: #4b5563;
+}
+
+body.theme-dark .form-label {
+    color: #d1d5db;
+}
+
+body.theme-dark .form-input,
+body.theme-dark .form-select {
+    background-color: #1f2937;
+    border-color: #4b5563;
+    color: #e5e7eb;
+}
+
+body.theme-dark .form-input:focus,
+body.theme-dark .form-select:focus {
+    border-color: #3b82f6;
+}
+
+body.theme-dark .device-item,
+body.theme-dark .activity-filters,
+body.theme-dark .two-factor-auth {
+    background-color: #1f2937;
+}
+
+body.theme-dark .device-item:hover {
+    background-color: #374151;
+}
+
+body.theme-dark .notification-option {
+    border-bottom-color: #4b5563;
+}
+
+body.theme-dark .notification-title {
+    color: #e5e7eb;
+}
+
+body.theme-dark .notification-description,
+body.theme-dark .device-details {
+    color: #9ca3af;
+}
+
+/* وضع الطباعة */
+@media print {
+    .user-dropdown-menu,
+    .user-profile-container,
+    .modal-close,
+    .modal-footer {
+        display: none !important;
+    }
+    
+    .modal-overlay {
+        position: relative;
+        background-color: white;
+    }
+    
+    .modal {
+        box-shadow: none;
+        width: 100%;
+        max-width: none;
+    }
+    
+    .user-profile-tab-btn:not(.active) {
+        display: none;
+    }
+    
+    .user-profile-tab-content:not(.active) {
+        display: none;
+    }
+}
+
+/* تنسيقات ويدجت التذكيرات السريعة */
+.quick-reminders {
+    padding: 15px;
+    background-color: #eff6ff;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.quick-reminders-title {
+    display: flex;
+    align-items: center;
+    color: #1d4ed8;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.quick-reminders-title i {
+    margin-left: 8px;
+}
+
+.reminders-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.reminder-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px dashed #bfdbfe;
+}
+
+.reminder-item:last-child {
+    border-bottom: none;
+}
+
+.reminder-icon {
+    color: #3b82f6;
+    margin-left: 10px;
+}
+
+.reminder-text {
+    color: #1e40af;
+    font-size: 0.9rem;
+}
+
+/* تنسيقات التوافق مع الهاتف */
+@media (max-width: 768px) {
+    .user-dropdown-menu {
+        position: fixed;
+        top: 60px;
+        left: 0;
+        right: 0;
+        width: 100%;
+        max-width: none;
+        border-radius: 0;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .user-profile-tabs {
+        flex-wrap: wrap;
+    }
+    
+    .user-profile-tab-btn {
+        flex-grow: 1;
+        text-align: center;
+    }
+    
+    .activity-header {
+        flex-direction: column;
+    }
+    
+    .export-options,
+    .admin-actions {
+        flex-direction: column;
+    }
+    
+    .modal {
+        width: 95%;
+        max-width: none;
+    }
+}
