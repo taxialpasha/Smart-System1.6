@@ -4368,20 +4368,20 @@ const InvestorCardSystem = (function() {
         return true;
     }
     
-   // Modificar la función shareCard para mostrar información completa no encriptada
+  // تعديل دالة shareCard لإضافة زر طباعة النافذة
 function shareCard(cardId) {
-    // Buscar la tarjeta
+    // البحث عن البطاقة
     const card = cards.find(c => c.id === cardId);
     if (!card) return;
     
-    // Preparar la información completa de la tarjeta en formato texto
+    // تحضير نص معلومات البطاقة
     const cardInfoText = `اسم المستثمر: ${card.investorName}
 رقم البطاقة: ${card.cardNumber}
 تاريخ الانتهاء: ${new Date(card.expiryDate).getMonth() + 1}/${new Date(card.expiryDate).getFullYear().toString().slice(2)}
 CVV: ${card.cvv}
 نوع البطاقة: ${CARD_TYPES[card.cardType]?.name || card.cardType}`;
 
-    // Crear la ventana modal para compartir
+    // إنشاء النافذة المنبثقة للمشاركة
     const container = document.createElement('div');
     container.className = 'modal-overlay active';
     container.id = 'share-card-modal';
@@ -4393,7 +4393,7 @@ CVV: ${card.cvv}
                 <button class="modal-close">&times;</button>
             </div>
             <div class="modal-body">
-                <div class="text-center mb-20">
+                <div class="text-center mb-20" id="card-qr-container">
                     <div style="margin: 0 auto; width: 150px; height: 150px; background-color: white; padding: 10px; border-radius: 10px;">
                         <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(cardInfoText)}" alt="QR Code" style="width: 100%; height: 100%;">
                     </div>
@@ -4420,13 +4420,304 @@ CVV: ${card.cvv}
                         <i class="fas fa-envelope"></i>
                         <span>إرسال بالبريد</span>
                     </button>
+                    
+                    <!-- إضافة زر الطباعة الجديد -->
+                    <button class="btn btn-info" id="print-card-info-btn">
+                        <i class="fas fa-print"></i>
+                        <span>طباعة البطاقة</span>
+                    </button>
                 </div>
             </div>
         </div>
     `;
     
-    // Añadir el modal al body
+    // إضافة النافذة المنبثقة إلى الصفحة
     document.body.appendChild(container);
+    
+    // إضافة مستمعي الأحداث
+    const closeButtons = container.querySelectorAll('.modal-close');
+    closeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            container.remove();
+        });
+    });
+    
+    // زر نسخ النص
+    const copyTextBtn = container.querySelector('#copy-text-btn');
+    if (copyTextBtn) {
+        copyTextBtn.addEventListener('click', function() {
+            const textarea = document.getElementById('share-text');
+            textarea.select();
+            document.execCommand('copy');
+            
+            const originalText = this.innerHTML;
+            this.innerHTML = '<i class="fas fa-check"></i><span>تم النسخ</span>';
+            
+            setTimeout(() => {
+                this.innerHTML = originalText;
+            }, 2000);
+        });
+    }
+    
+    // زر تنزيل QR
+    const downloadQrBtn = container.querySelector('#download-qr-btn');
+    if (downloadQrBtn) {
+        downloadQrBtn.addEventListener('click', function() {
+            const qrImage = container.querySelector('img');
+            if (qrImage && qrImage.src) {
+                const link = document.createElement('a');
+                link.href = qrImage.src;
+                link.download = `بطاقة_${card.investorName.replace(/\s+/g, '_')}.png`;
+                link.click();
+            }
+        });
+    }
+    
+    // زر إرسال بالبريد
+    const sendEmailBtn = container.querySelector('#send-email-btn');
+    if (sendEmailBtn) {
+        sendEmailBtn.addEventListener('click', function() {
+            const subject = `بطاقة المستثمر - ${card.investorName}`;
+            const body = document.getElementById('share-text').value;
+            
+            window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        });
+    }
+    
+    // زر طباعة معلومات البطاقة
+    const printCardInfoBtn = container.querySelector('#print-card-info-btn');
+    if (printCardInfoBtn) {
+        printCardInfoBtn.addEventListener('click', function() {
+            printCardInfo(card);
+        });
+    }
+    
+    // تسجيل نشاط المشاركة
+    addActivity(cardId, 'share');
+    
+    return true;
+}
+
+// وظيفة جديدة لطباعة معلومات البطاقة ونافذة الباركود
+function printCardInfo(card) {
+    // إنشاء نافذة طباعة جديدة
+    const printWindow = window.open('', '_blank');
+    
+    // تحضير نص معلومات البطاقة
+    const cardInfoText = `اسم المستثمر: ${card.investorName}
+رقم البطاقة: ${card.cardNumber}
+تاريخ الانتهاء: ${new Date(card.expiryDate).getMonth() + 1}/${new Date(card.expiryDate).getFullYear().toString().slice(2)}
+CVV: ${card.cvv}
+نوع البطاقة: ${CARD_TYPES[card.cardType]?.name || card.cardType}`;
+
+    // إنشاء محتوى نافذة الطباعة
+    printWindow.document.write(`
+        <!DOCTYPE html>
+        <html dir="rtl">
+        <head>
+            <title>طباعة معلومات بطاقة المستثمر</title>
+            <meta charset="UTF-8">
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    padding: 20px;
+                    direction: rtl;
+                }
+                
+                .print-container {
+                    max-width: 500px;
+                    margin: 0 auto;
+                    border: 1px solid #ddd;
+                    border-radius: 10px;
+                    padding: 20px;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                }
+                
+                .print-header {
+                    text-align: center;
+                    margin-bottom: 20px;
+                    padding-bottom: 10px;
+                    border-bottom: 1px solid #eee;
+                }
+                
+                .print-title {
+                    font-size: 24px;
+                    margin-bottom: 5px;
+                    color: #333;
+                }
+                
+                .print-subtitle {
+                    font-size: 14px;
+                    color: #777;
+                }
+                
+                .qr-container {
+                    text-align: center;
+                    margin: 20px 0;
+                }
+                
+                .qr-code {
+                    width: 200px;
+                    height: 200px;
+                    margin: 0 auto;
+                    background-color: white;
+                    padding: 10px;
+                    border-radius: 10px;
+                    border: 1px solid #eee;
+                }
+                
+                .qr-code img {
+                    width: 100%;
+                    height: 100%;
+                }
+                
+                .card-details {
+                    background-color: #f9f9f9;
+                    border-radius: 8px;
+                    padding: 15px;
+                }
+                
+                .card-info-item {
+                    padding: 8px 0;
+                    display: flex;
+                    border-bottom: 1px dashed #eee;
+                    line-height: 1.5;
+                }
+                
+                .card-info-item:last-child {
+                    border-bottom: none;
+                }
+                
+                .card-info-label {
+                    font-weight: bold;
+                    min-width: 150px;
+                }
+                
+                .footer {
+                    margin-top: 30px;
+                    text-align: center;
+                    font-size: 12px;
+                    color: #777;
+                }
+                
+                .logo {
+                    text-align: center;
+                    margin-bottom: 20px;
+                }
+                
+                .logo img {
+                    max-height: 60px;
+                }
+                
+                .print-button {
+                    display: block;
+                    margin: 20px auto;
+                    padding: 10px 20px;
+                    background-color: #3498db;
+                    color: white;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    font-size: 16px;
+                }
+                
+                @media print {
+                    .no-print {
+                        display: none;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="print-container">
+                <div class="print-header">
+                    <div class="logo">
+                        <!-- يمكن إضافة شعار النظام هنا -->
+                        <div style="font-size: 24px; font-weight: bold; color: #3498db;">نظام الاستثمار المتكامل</div>
+                    </div>
+                    <h1 class="print-title">بطاقة مستثمر</h1>
+                    <p class="print-subtitle">معلومات البطاقة وبيانات المستثمر</p>
+                </div>
+                
+                <div class="qr-container">
+                    <div class="qr-code">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(cardInfoText)}" alt="QR Code">
+                    </div>
+                    <p>امسح هذا الكود QR للوصول إلى بيانات البطاقة</p>
+                </div>
+                
+                <div class="card-details">
+                    <div class="card-info-item">
+                        <div class="card-info-label">اسم المستثمر:</div>
+                        <div>${card.investorName}</div>
+                    </div>
+                    <div class="card-info-item">
+                        <div class="card-info-label">رقم البطاقة:</div>
+                        <div>${card.cardNumber}</div>
+                    </div>
+                    <div class="card-info-item">
+                        <div class="card-info-label">تاريخ الانتهاء:</div>
+                        <div>${new Date(card.expiryDate).getMonth() + 1}/${new Date(card.expiryDate).getFullYear().toString().slice(2)}</div>
+                    </div>
+                    <div class="card-info-item">
+                        <div class="card-info-label">CVV:</div>
+                        <div>${card.cvv}</div>
+                    </div>
+                    <div class="card-info-item">
+                        <div class="card-info-label">نوع البطاقة:</div>
+                        <div>${CARD_TYPES[card.cardType]?.name || card.cardType}</div>
+                    </div>
+                </div>
+                
+                <div class="footer">
+                    <p>تم إنشاء هذه البطاقة من خلال نظام بطاقات المستثمرين - الإصدار 2.0</p>
+                    <p>تاريخ الطباعة: ${new Date().toLocaleDateString('ar-IQ')}</p>
+                </div>
+            </div>
+            
+            <button class="print-button no-print" id="print-btn">طباعة البطاقة</button>
+            
+            <script>
+                // زر الطباعة
+                document.getElementById('print-btn').addEventListener('click', function() {
+                    window.print();
+                });
+                
+                // طباعة تلقائية عند تحميل الصفحة
+                window.addEventListener('load', function() {
+                    // تأخير قليل للتأكد من تحميل الصفحة بالكامل
+                    setTimeout(function() {
+                        window.print();
+                    }, 1000);
+                });
+            </script>
+        </body>
+        </html>
+    `);
+    
+    printWindow.document.close();
+    
+    // إضافة نشاط الطباعة
+    addActivity(card.id, 'print_info');
+    
+    return true;
+}
+
+// إضافة الوظائف الجديدة لواجهة نظام البطاقات
+// تعديل الكائن المُعاد في نهاية النظام
+return {
+    initialize,
+    renderCards,
+    showCardDetails,
+    printCard,
+    printCardInfo, // إضافة الوظيفة الجديدة
+    createCard,
+    showCardPage,
+    toggleDarkMode,
+    updateCardStats,
+    renderCardStats,
+    exportCardStats
+};
     
     // Agregar listeners de eventos igual que en la función original
     const closeButtons = container.querySelectorAll('.modal-close');
