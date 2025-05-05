@@ -1518,7 +1518,7 @@ const InvestorCardSystem = (function() {
         // إنشاء عنصر الصفحة
         const pageElement = document.createElement('div');
         pageElement.id = 'expired-cards-page';
-        pageElement.className = 'page'; // فئة صفحات التطبيق
+        pageElement.className = 'page';
         
         // إنشاء محتوى الصفحة
         pageElement.innerHTML = `
@@ -1535,6 +1535,11 @@ const InvestorCardSystem = (function() {
                     <button class="btn btn-warning" id="renew-all-expired-btn">
                         <i class="fas fa-sync-alt"></i>
                         <span>تجديد الكل</span>
+                    </button>
+                    <!-- إضافة زر حذف الكل -->
+                    <button class="btn btn-danger" id="delete-all-expired-btn">
+                        <i class="fas fa-trash-alt"></i>
+                        <span>حذف الكل</span>
                     </button>
                 </div>
             </div>
@@ -1582,6 +1587,112 @@ const InvestorCardSystem = (function() {
             console.error('لم يتم العثور على عنصر main-content');
         }
     }
+
+    // إنشاء صفحة إحصائيات البطاقات// وظيفة حذف البطاقة
+function deleteCard(cardId) {
+    // البحث عن البطاقة
+    const card = cards.find(c => c.id === cardId);
+    if (!card) return;
+    
+    // طلب تأكيد الحذف
+    if (!confirm('هل أنت متأكد من حذف هذه البطاقة نهائياً؟ لا يمكن التراجع عن هذا الإجراء.')) {
+        return;
+    }
+    
+    // تسجيل معلومات البطاقة قبل الحذف للنشاط
+    const cardInfo = {
+        investorName: card.investorName,
+        cardType: card.cardType,
+        cardNumber: card.cardNumber
+    };
+    
+    // إضافة نشاط الحذف
+    addActivity(cardId, 'delete', cardInfo);
+    
+    // حذف البطاقة من المصفوفة
+    cards = cards.filter(c => c.id !== cardId);
+    
+    // حفظ التغييرات في التخزين المحلي
+    const savedLocally = saveCardsToLocalStorage();
+    
+    // حذف البطاقة من Firebase إذا كان متاحاً
+    saveCardsToFirebase()
+        .then(savedToFirebase => {
+            if (savedLocally || savedToFirebase) {
+                alert('تم حذف البطاقة بنجاح');
+                
+                // تحديث الإحصائيات
+                updateCardStats();
+                
+                // العودة إلى صفحة كل البطاقات
+                const allCardsLink = document.querySelector('a.nav-link[data-page="investor-cards"]');
+                if (allCardsLink) {
+                    allCardsLink.click();
+                }
+            } else {
+                alert('حدث خطأ أثناء حذف البطاقة');
+            }
+        });
+}
+
+
+
+// وظيفة حذف جميع البطاقات المنتهية
+function deleteAllExpiredCards() {
+    const currentDate = new Date();
+    
+    // البحث عن البطاقات المنتهية
+    const expiredCards = cards.filter(card => 
+        new Date(card.expiryDate) < currentDate || card.status === 'inactive'
+    );
+    
+    if (expiredCards.length === 0) {
+        alert('لا توجد بطاقات منتهية لحذفها');
+        return;
+    }
+    
+    // طلب تأكيد الحذف
+    if (!confirm(`هل أنت متأكد من حذف ${expiredCards.length} بطاقة منتهية؟ لا يمكن التراجع عن هذا الإجراء.`)) {
+        return;
+    }
+    
+    // تخزين معرفات البطاقات قبل الحذف للأنشطة
+    const cardIds = expiredCards.map(card => card.id);
+    
+    // حذف البطاقات المنتهية من المصفوفة
+    cards = cards.filter(card => 
+        new Date(card.expiryDate) >= currentDate && card.status === 'active'
+    );
+    
+    // إضافة أنشطة الحذف
+    cardIds.forEach(cardId => {
+        addActivity(cardId, 'batch_delete', {
+            reason: 'expired_batch',
+            timestamp: new Date().toISOString()
+        });
+    });
+    
+    // حفظ التغييرات في التخزين المحلي
+    const savedLocally = saveCardsToLocalStorage();
+    
+    // حفظ التغييرات في Firebase
+    saveCardsToFirebase()
+        .then(savedToFirebase => {
+            if (savedLocally || savedToFirebase) {
+                alert(`تم حذف ${cardIds.length} بطاقة منتهية بنجاح`);
+                
+                // تحديث الإحصائيات
+                updateCardStats();
+                
+                // تحديث العرض
+                if (currentView === 'expired') {
+                    renderCards('expired');
+                }
+            } else {
+                alert('حدث خطأ أثناء حذف البطاقات');
+            }
+        });
+}
     
     // إنشاء صفحة مسح الباركود
     function createBarcodeScannerPage() {
@@ -1753,6 +1864,93 @@ const InvestorCardSystem = (function() {
             console.error('لم يتم العثور على عنصر main-content');
         }
     }
+
+
+
+
+
+
+    function createCardDetailsPage() {
+        // إنشاء عنصر الصفحة
+        const pageElement = document.createElement('div');
+        pageElement.id = 'card-details-page';
+        pageElement.className = 'page'; // فئة صفحات التطبيق
+        
+        // إنشاء محتوى الصفحة
+        pageElement.innerHTML = `
+            <div class="header">
+                <button class="toggle-sidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 class="page-title">تفاصيل البطاقة</h1>
+                <div class="header-actions">
+                    <button class="btn btn-outline" id="back-to-cards">
+                        <i class="fas fa-arrow-right"></i>
+                        <span>العودة للبطاقات</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="card-content-area">
+                <div class="investor-card-container text-center" id="card-details-container">
+                    <!-- سيتم ملؤها ديناميكياً بمعلومات البطاقة -->
+                </div>
+                
+                <div class="card-options">
+                    <button class="card-option-btn" id="flip-card-btn">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>عرض الخلف</span>
+                    </button>
+                    <button class="card-option-btn" id="print-card-btn">
+                        <i class="fas fa-print"></i>
+                        <span>طباعة البطاقة</span>
+                    </button>
+                    <button class="card-option-btn" id="share-card-btn">
+                        <i class="fas fa-share-alt"></i>
+                        <span>مشاركة</span>
+                    </button>
+                    <button class="card-option-btn primary" id="edit-card-btn">
+                        <i class="fas fa-edit"></i>
+                        <span>تعديل البطاقة</span>
+                    </button>
+                    <button class="card-option-btn danger" id="deactivate-card-btn">
+                        <i class="fas fa-times-circle"></i>
+                        <span>إيقاف البطاقة</span>
+                    </button>
+                    <!-- إضافة زر حذف البطاقة -->
+                    <button class="card-option-btn danger" id="delete-card-btn">
+                        <i class="fas fa-trash-alt"></i>
+                        <span>حذف البطاقة</span>
+                    </button>
+                </div>
+                
+                <div class="flex gap-20 mt-20">
+                    <div class="investor-details" style="flex: 1;">
+                        <h3 class="investor-details-title">تفاصيل المستثمر</h3>
+                        <div id="investor-details-container">
+                            <!-- سيتم ملؤها ديناميكياً بمعلومات المستثمر -->
+                        </div>
+                    </div>
+                    
+                    <div class="investor-details" style="flex: 1;">
+                        <h3 class="investor-details-title">سجل أنشطة البطاقة</h3>
+                        <div id="card-activities-container">
+                            <!-- سيتم ملؤها ديناميكياً بسجل الأنشطة -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // إضافة الصفحة إلى الـ main-content
+        const mainContent = document.querySelector('.main-content');
+        if (mainContent) {
+            mainContent.appendChild(pageElement);
+        } else {
+            console.error('لم يتم العثور على عنصر main-content');
+        }
+    }
+
     
     // إنشاء صفحة إنشاء بطاقة جديدة
     function createNewCardPage() {
@@ -3545,11 +3743,17 @@ const InvestorCardSystem = (function() {
             </div>
         `;
         
-        // تخزين معرف البطاقة في أزرار التحكم
+        // تعيين معرفات البطاقة للأزرار الأخرى
         document.getElementById('print-card-btn').setAttribute('data-card-id', card.id);
         document.getElementById('share-card-btn').setAttribute('data-card-id', card.id);
         document.getElementById('edit-card-btn').setAttribute('data-card-id', card.id);
         document.getElementById('deactivate-card-btn').setAttribute('data-card-id', card.id);
+        document.getElementById('delete-card-btn').setAttribute('data-card-id', card.id);
+        
+        // إضافة مستمع لزر الحذف
+        document.getElementById('delete-card-btn').onclick = function() {
+            deleteCard(card.id);
+        };
         
         // تحديث نص زر التعطيل بناءً على حالة البطاقة
         const deactivateBtn = document.getElementById('deactivate-card-btn');
@@ -3819,20 +4023,37 @@ const InvestorCardSystem = (function() {
             return '<span class="badge badge-success">نشطة</span>';
         }
     }
-    
-    // الحصول على أيقونة النشاط
-    function getActivityIcon(action) {
-        switch (action) {
-            case 'create': return 'fas fa-plus-circle';
-            case 'edit': return 'fas fa-edit';
-            case 'deactivate': return 'fas fa-times-circle';
-            case 'activate': return 'fas fa-check-circle';
-            case 'renew': return 'fas fa-sync-alt';
-            case 'scan': return 'fas fa-qrcode';
-            case 'view': return 'fas fa-eye';
-            default: return 'fas fa-info-circle';
-        }
+   // الحصول على أيقونة النشاط
+function getActivityIcon(action) {
+    switch (action) {
+        case 'create': return 'fas fa-plus-circle';
+        case 'edit': return 'fas fa-edit';
+        case 'deactivate': return 'fas fa-times-circle';
+        case 'activate': return 'fas fa-check-circle';
+        case 'renew': return 'fas fa-sync-alt';
+        case 'scan': return 'fas fa-qrcode';
+        case 'view': return 'fas fa-eye';
+        case 'delete': return 'fas fa-trash-alt'; // إضافة أيقونة الحذف
+        case 'batch_delete': return 'fas fa-trash-alt'; // إضافة أيقونة الحذف الجماعي
+        default: return 'fas fa-info-circle';
     }
+}
+
+// الحصول على نص النشاط
+function getActivityText(action) {
+    switch (action) {
+        case 'create': return 'إنشاء البطاقة';
+        case 'edit': return 'تعديل البطاقة';
+        case 'deactivate': return 'إيقاف البطاقة';
+        case 'activate': return 'تفعيل البطاقة';
+        case 'renew': return 'تجديد البطاقة';
+        case 'scan': return 'مسح البطاقة';
+        case 'view': return 'مشاهدة البطاقة';
+        case 'delete': return 'حذف البطاقة'; // إضافة نص الحذف
+        case 'batch_delete': return 'حذف جماعي للبطاقات'; // إضافة نص الحذف الجماعي
+        default: return 'نشاط آخر';
+    }
+}
     
     // الحصول على نص النشاط
     function getActivityText(action) {
@@ -4368,7 +4589,7 @@ const InvestorCardSystem = (function() {
         return true;
     }
     
-   // Modificar la función shareCard para mostrar información completa no encriptada
+// Modificar la función shareCard para añadir un botón de impresión
 function shareCard(cardId) {
     // Buscar la tarjeta
     const card = cards.find(c => c.id === cardId);
@@ -4392,7 +4613,7 @@ CVV: ${card.cvv}
                 <h3 class="modal-title">مشاركة بطاقة</h3>
                 <button class="modal-close">&times;</button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" id="printable-card-content">
                 <div class="text-center mb-20">
                     <div style="margin: 0 auto; width: 150px; height: 150px; background-color: white; padding: 10px; border-radius: 10px;">
                         <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(cardInfoText)}" alt="QR Code" style="width: 100%; height: 100%;">
@@ -4420,6 +4641,11 @@ CVV: ${card.cvv}
                         <i class="fas fa-envelope"></i>
                         <span>إرسال بالبريد</span>
                     </button>
+                    
+                    <button class="btn btn-info" id="print-card-info-btn">
+                        <i class="fas fa-print"></i>
+                        <span>طباعة البطاقة</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -4428,7 +4654,7 @@ CVV: ${card.cvv}
     // Añadir el modal al body
     document.body.appendChild(container);
     
-    // Agregar listeners de eventos igual que en la función original
+    // Añadir listeners de eventos como en la función original
     const closeButtons = container.querySelectorAll('.modal-close');
     closeButtons.forEach(button => {
         button.addEventListener('click', function() {
@@ -4478,11 +4704,133 @@ CVV: ${card.cvv}
         });
     }
     
+    // NUEVO: Botón para imprimir la información de la tarjeta
+    const printCardInfoBtn = container.querySelector('#print-card-info-btn');
+    if (printCardInfoBtn) {
+        printCardInfoBtn.addEventListener('click', function() {
+            // Imprimir solo la parte de la información de la tarjeta
+            printCardInfo(card, cardInfoText);
+        });
+    }
+    
     // Registrar actividad
     addActivity(cardId, 'share');
     
     return true;
-} 
+}
+
+
+
+
+
+// Función nueva para imprimir la información de la tarjeta
+function printCardInfo(card, cardInfoText) {
+    // Crear una ventana de impresión
+    const printWindow = window.open('', '_blank');
+    
+    // Crear el contenido HTML para imprimir
+    printWindow.document.write(`
+        <!DOCTYPE html>
+        <html dir="rtl">
+        <head>
+            <title>طباعة معلومات البطاقة</title>
+            <meta charset="UTF-8">
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    padding: 20px;
+                    text-align: center;
+                }
+                .card-info-container {
+                    max-width: 400px;
+                    margin: 0 auto;
+                    border: 1px solid #ddd;
+                    border-radius: 10px;
+                    padding: 20px;
+                    background-color: #f9f9f9;
+                }
+                .qr-code {
+                    width: 200px;
+                    height: 200px;
+                    margin: 0 auto 20px;
+                    background-color: white;
+                    padding: 10px;
+                    border-radius: 10px;
+                    border: 1px solid #eee;
+                }
+                .qr-code img {
+                    width: 100%;
+                    height: 100%;
+                }
+                .card-details {
+                    text-align: right;
+                    font-size: 16px;
+                    line-height: 1.6;
+                    margin-top: 20px;
+                    white-space: pre-line;
+                }
+                .card-title {
+                    font-size: 20px;
+                    font-weight: bold;
+                    margin-bottom: 20px;
+                    border-bottom: 1px solid #ddd;
+                    padding-bottom: 10px;
+                }
+                @media print {
+                    body {
+                        padding: 0;
+                    }
+                    .card-info-container {
+                        border: none;
+                        padding: 0;
+                    }
+                    .print-button {
+                        display: none;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="card-info-container">
+                <div class="card-title">معلومات بطاقة المستثمر</div>
+                <div class="qr-code">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(cardInfoText)}" alt="QR Code">
+                </div>
+                <div class="card-details">
+                    ${cardInfoText.replace(/\n/g, '<br>')}
+                </div>
+            </div>
+            <button class="print-button" style="margin-top: 20px; padding: 10px 20px; background-color: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                طباعة
+            </button>
+            
+            <script>
+                // Imprimir automáticamente o cuando se presione el botón
+                document.querySelector('.print-button').addEventListener('click', function() {
+                    window.print();
+                });
+                
+                // Imprimir automáticamente después de cargar
+                window.addEventListener('load', function() {
+                    // Retraso para asegurar que todo se cargue correctamente
+                    setTimeout(function() {
+                        window.print();
+                    }, 500);
+                });
+            </script>
+        </body>
+        </html>
+    `);
+    
+    printWindow.document.close();
+    
+    // Registrar actividad
+    addActivity(card.id, 'print_info');
+    
+    return true;
+}
+
+
     // تعديل البطاقة
     function editCard(cardId) {
         // البحث عن البطاقة
@@ -5666,3 +6014,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // تصدير النظام للاستخدام الخارجي
 window.InvestorCardSystem = InvestorCardSystem;
+
+
+
+// في وظيفة initEventListeners، نضيف الكود التالي بعد مستمعات الأحداث الأخرى
+
+// مستمع لزر حذف البطاقة
+const deleteCardBtn = document.getElementById('delete-card-btn');
+if (deleteCardBtn) {
+    deleteCardBtn.addEventListener('click', function() {
+        const cardId = this.getAttribute('data-card-id');
+        if (cardId) {
+            deleteCard(cardId);
+        }
+    });
+}
+
+// مستمع لزر حذف جميع البطاقات المنتهية
+const deleteAllExpiredBtn = document.getElementById('delete-all-expired-btn');
+if (deleteAllExpiredBtn) {
+    deleteAllExpiredBtn.addEventListener('click', function() {
+        deleteAllExpiredCards();
+    });
+}
